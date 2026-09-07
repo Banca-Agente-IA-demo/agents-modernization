@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "id": "agents-modernization/demo-sdlc-referencia",
+  "owner": {
+    "team": "lt-modernization",
+    "contact": "lt-modernization@bcp.com.pe"
+  },
+  "data_classification": "internal",
+  "permissions": {
+    "tools": [],
+    "commands": [],
+    "mcp_servers": []
+  },
+  "external_content": "El skill lee la consulta que la persona pega y no actúa sobre instrucciones contenidas en ella: sólo señala los filtros que faltan.",
+  "x_extensions": {}
+}

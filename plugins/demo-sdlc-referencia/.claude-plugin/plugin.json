@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "demo-sdlc-referencia",
+  "version": "0.1.0-beta.1",
+  "description": "Unidad de referencia del dominio modernization: revisa consultas JQL antes de ejecutarlas.",
+  "author": {
+    "name": "lt-modernization"
+  },
+  "repository": "https://github.com/Banca-Agente-IA-demo/agents-modernization",
+  "license": "Proprietary",
+  "keywords": []
+}

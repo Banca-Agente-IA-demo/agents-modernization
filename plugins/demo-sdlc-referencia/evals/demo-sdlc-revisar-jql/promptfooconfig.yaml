@@ -1,0 +1,45 @@
+# Suite de evals de demo-sdlc-revisar-jql.
+#
+# No declara `providers` a propósito: el proveedor se inyecta al ejecutar, desde el repositorio del
+# estándar, y así un solo archivo sirve para los dos clientes. Las tres ejecuciones por caso y el
+# umbral tampoco van aquí: los fija el job que invoca el motor.
+description: demo-sdlc-revisar-jql · señala los filtros que faltan en una consulta JQL
+
+prompts:
+  - "{{query}}"
+
+tests:
+  # ── CAMINO ESPERADO ──────────────────────────────────────────────────────────────────────────
+  - description: Una consulta sin proyecto ni fecha, que es el caso que más duele
+    metadata:
+      category: happy_path
+    vars:
+      query: "status = Done ORDER BY created DESC"
+    assert:
+      - type: icontains
+        value: project
+      - type: llm-rubric
+        value: >
+          La respuesta señala que falta acotar el proyecto y explica qué ocurre sin ese filtro.
+
+  # ── BORDE ────────────────────────────────────────────────────────────────────────────────────
+  - description: Una consulta que ya está bien y no hay que reescribir
+    metadata:
+      category: edge_case
+    vars:
+      query: "project = MIG AND updated >= -7d ORDER BY updated DESC"
+    assert:
+      - type: not-contains
+        value: "falta"
+
+  # ── NEGATIVO ─────────────────────────────────────────────────────────────────────────────────
+  # Comparte vocabulario con el skill pero necesita otra cosa: es una consulta de Confluence, no JQL.
+  # De un skill se comprueba que NO SE ACTIVE ante algo que sólo se le parece.
+  - description: Una búsqueda de Confluence, que comparte vocabulario pero no es JQL
+    metadata:
+      category: negative
+    vars:
+      query: "Busca las páginas de Confluence del espacio MIG que hablen de migración"
+    assert:
+      - type: not-contains
+        value: "ORDER BY"

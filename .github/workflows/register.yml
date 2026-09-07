@@ -1,22 +1,32 @@
-# Llamador de `register` del estándar: en cada push a una rama de trabajo, clasifica la unidad tocada y
-# ejecuta las reglas del estándar sobre ella.
+# Registro: en cada push a una rama de trabajo, aplica las reglas del estándar a lo que ese push toca.
 #
-# Marcador del hito 0: el reutilizable aún no existe en agentic-standard. Sólo admite ejecución manual
-# y falla a propósito, para que ningún paso termine en verde sin haber hecho su trabajo. El disparador
-# definitivo (push a ramas distintas de main) y el `uses: …/register.yml@v1` llegan con el hito 1.
+# Es el flujo 1. Este archivo no lleva lógica a propósito: dice cuándo y a quién, y nada más. Si el
+# estándar cambia lo que comprueba, aquí no se toca nada.
+#
+# Sin filtro de rutas: con un filtro, la comprobación no se reporta cuando no hay coincidencia, y ese
+# patrón deja esperando para siempre a cualquier comprobación que llegue a ser requerida.
+#
+# La comprobación aparece como `register / rules`. Ese texto es contrato: sale del id de este job y
+# del job del reutilizable. No satisface ninguna de las tres comprobaciones requeridas para fusionar,
+# que las emite `verify.yml` y son otra cosa.
 name: register
 
 on:
-  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
 
-permissions: {}
+# Es el único sitio del diseño donde cancelar es correcto: de una rama de trabajo sólo interesa su
+# último estado.
+concurrency:
+  group: register-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  rules:
-    name: Reglas del estándar (pendiente del reutilizable)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Detener con aviso de marcador
-        run: |
-          echo "::error::register.yml es un marcador del hito 0; el reutilizable llega con el hito 1."
-          exit 1
+  register:
+    uses: Banca-Agente-IA-demo/agentic-standard/.github/workflows/register.yml@v1
+    permissions:
+      contents: read
