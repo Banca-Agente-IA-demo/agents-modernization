@@ -1,5 +1,5 @@
 ---
-name: demo-sdlc-revisar-jql
+name: revisar-jql
 description: Revisa una consulta JQL y señala los filtros que faltan antes de ejecutarla. Úsalo cuando alguien escriba o pegue una consulta JQL.
 metadata:
   tags: jira, jql, revision
