@@ -1,0 +1,22 @@
+# Llamador de `tag` del estándar: en cada push a main repite la comprobación de colisión y empuja la
+# etiqueta de la unidad con el token efímero de la App agentic-lifecycle.
+#
+# Marcador del hito 0: el reutilizable aún no existe en agentic-standard. Sólo admite ejecución manual
+# y falla a propósito, para que ningún paso termine en verde sin haber hecho su trabajo. El disparador
+# definitivo (push a main) y el `uses: …/tag.yml@v1` llegan con el hito 5.
+name: tag
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  placeholder:
+    name: Etiquetado (pendiente del reutilizable)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Detener con aviso de marcador
+        run: |
+          echo "::error::tag.yml es un marcador del hito 0; el reutilizable llega con el hito 5."
+          exit 1

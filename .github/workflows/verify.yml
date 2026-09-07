@@ -1,0 +1,23 @@
+# Llamador de `verify` del estándar: en cada PR a main produce los tres requeridos del ruleset,
+# `verify / rules`, `verify / evals-verdict` y `verify / collision`. Esos tres nombres son contrato.
+#
+# Marcador del hito 0: el reutilizable aún no existe en agentic-standard. Sólo admite ejecución manual
+# y falla a propósito, para que ningún paso termine en verde sin haber hecho su trabajo. El disparador
+# definitivo (pull_request a main) y el `uses: …/verify.yml@v1` llegan con el hito 3. Mientras tanto,
+# un PR muestra los tres requeridos en «esperando», que es la evidencia de cierre del hito 0.
+name: verify
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  placeholder:
+    name: Verificación (pendiente del reutilizable)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Detener con aviso de marcador
+        run: |
+          echo "::error::verify.yml es un marcador del hito 0; el reutilizable llega con el hito 3."
+          exit 1

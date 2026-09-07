@@ -1,0 +1,6 @@
+# Todo el repositorio: el Lead Técnico del dominio aprueba (01 §2)
+*                       @Banca-Agente-IA-demo/lt-modernization
+
+# Superficies que exigen Ciberseguridad (03 §1): hooks, scripts y configuración MCP
+**/hooks/**             @Banca-Agente-IA-demo/lt-modernization @Banca-Agente-IA-demo/cybersecurity
+**/.mcp.json            @Banca-Agente-IA-demo/lt-modernization @Banca-Agente-IA-demo/cybersecurity @Banca-Agente-IA-demo/operational-risk
