@@ -1,0 +1,152 @@
+name: Acta de aceptación del piloto
+description: Una por unidad y versión beta. La abre la automatización al publicar la beta; la rellena el piloto en comentarios; la cierra Calidad.
+title: "[Acta] <unidad> <versión-beta>"
+labels: ["pilot-acceptance"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Cómo funciona esta acta
+
+        - **La automatización** la abre al publicar la beta y rellena los datos fijos de la unidad.
+        - **Cada miembro del piloto** deja **un comentario por caso real** con la plantilla del final. No edita este cuerpo: sólo necesita permiso de lectura.
+        - **El coordinador del piloto** (asignado a este issue) publica la **recomendación** cuando los criterios están cubiertos, citando los comentarios en que se apoya.
+        - **Calidad** contrasta los criterios con los comentarios y **cierra** el issue: *completed* = aceptada, *not planned* = rechazada, siempre con motivo. Si el acta está incompleta pero nada indica defecto, la deja abierta y dice qué falta.
+        - En **riesgo alto**, Ciberseguridad con un probador de Calidad añade la **sección de red teaming humano** antes del cierre.
+        - Si se rechaza, el autor corrige, publica otra beta y **se abre un acta nueva** para esa versión.
+
+  - type: input
+    id: unit
+    attributes:
+      label: Unidad
+      description: Identificador de la unidad publicable, tal como aparece en GOVERNANCE.json
+      placeholder: jql-assistant
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Versión beta
+      description: La versión de prelanzamiento que el piloto está probando
+      placeholder: 0.1.0-beta.1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: unit_type
+    attributes:
+      label: Tipo de unidad
+      options:
+        - skill
+        - agent
+        - prompt
+        - mcp
+        - hooks
+        - plugin
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk_level
+    attributes:
+      label: Nivel de riesgo
+      description: El de GOVERNANCE.json. En alto, la sección de red teaming humano es obligatoria.
+      options:
+        - low
+        - medium
+        - high
+    validations:
+      required: true
+
+  - type: dropdown
+    id: clients
+    attributes:
+      label: Clientes que la unidad declara
+      description: El piloto debe probar en todos los declarados. Copilot CLI es siempre el de referencia.
+      options:
+        - Copilot CLI
+        - Copilot CLI y Claude Code
+    validations:
+      required: true
+
+  - type: input
+    id: release
+    attributes:
+      label: Release de la beta
+      description: Enlace al release con prerelease = true que el piloto instala
+      placeholder: https://github.com/Banca-Agente-IA-demo/agents-modernization/releases/tag/jql-assistant-v0.1.0-beta.1
+    validations:
+      required: true
+
+  - type: input
+    id: coordinator
+    attributes:
+      label: Coordinador del piloto
+      description: La persona asignada a este issue; la designa el Lead Técnico al proponer el equipo piloto. Publica la recomendación.
+      placeholder: "@usuario"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Criterios de aceptación
+
+        Son los mismos para los dos lados: el piloto los **alcanza** y los deja anotados; Calidad **comprueba** en los comentarios que se alcanzaron.
+
+        | Criterio | Mínimo que el piloto alcanza antes de proponer | Qué comprueba Calidad para aceptar |
+        |---|---|---|
+        | Uso real | Al menos dos personas la usaron en tareas propias, no en demostraciones | Comentarios de al menos dos autores distintos que describen tareas propias |
+        | Casos de uso | Al menos tres casos reales anotados, con el resultado que dio | Los tres casos tienen desenlace, no un enunciado sin resultado |
+        | Clientes | Probada en Copilot CLI; en Claude Code si la unidad lo declara | Los comentarios dicen en qué cliente y cubren los declarados |
+        | Fallos | Ningún fallo bloqueante sin explicación; los menores con su contexto | Ningún fallo anotado impide el uso previsto; los menores llevan contexto |
+        | Fuera de alcance | Lo que hizo fuera de lo declarado está anotado, y nada toca seguridad ni datos | Lo anotado no toca seguridad ni datos; si los toca, rechaza sin más análisis |
+        | Recomendación | La mayoría recomienda promocionar; el coordinador lo constata y anota la discrepancia si no es unánime | La recomendación existe, la firma el coordinador y cita los comentarios en que se apoya |
+        | Riesgo alto | Además, el ejercicio de red teaming humano documentado abajo | La sección está completa y ningún hallazgo explotable queda sin corregir y volver a probar |
+
+  - type: textarea
+    id: red_team
+    attributes:
+      label: Red teaming humano (sólo riesgo alto)
+      description: La rellena Ciberseguridad con el probador de Calidad, durante Experimental y antes del cierre. Aquí va el veredicto y el resumen; el detalle de prompts y capturas va al registro de pentest del banco.
+      value: |
+        **Veredicto:** <sin hallazgos explotables | hallazgos corregidos y vueltos a probar | bloqueado>
+        **Versión y commit probados:** <0.1.0-beta.1 · abc1234>
+        **Fecha:** <AAAA-MM-DD>
+        **Condujo:** <@ciberseguridad> con <@calidad>
+        **Registro externo:** <enlace al sistema de pentest del banco>
+
+        | # | Hallazgo (resumen) | Severidad | Destino | Caso añadido |
+        |---|---|---|---|---|
+        | 1 | | | corregido y vuelto a probar / riesgo residual aceptado por @… | suite del autor / catálogo del estándar / no reproducible: <motivo> |
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Plantilla de comentario para el piloto
+
+        Un comentario por caso. Copia y rellena:
+
+        ```
+        **Caso:** <qué tarea propia resolviste con la unidad>
+        **Cliente:** Copilot CLI | Claude Code
+        **Resultado:** <qué dio; si sirvió o no>
+        **Falló:** <nada | descripción; bloqueante sí/no>
+        **Fuera de alcance:** <nada | qué hizo que no estaba declarado>
+        ```
+
+        ## Recomendación del coordinador
+
+        Cuando los criterios estén cubiertos, un comentario:
+
+        ```
+        **Piloto terminado. Recomendamos promocionar: sí | no**
+        **Se apoya en:** #issuecomment-…, #issuecomment-…
+        **Unanimidad:** sí | no — <quién discrepa y por qué>
+        @Banca-Agente-IA-demo/quality
+        ```
+
+        ## Decisión de Calidad
+
+        Un comentario con la lista de criterios marcada y el motivo, y el cierre del issue como *completed* (aceptada) o *not planned* (rechazada).
