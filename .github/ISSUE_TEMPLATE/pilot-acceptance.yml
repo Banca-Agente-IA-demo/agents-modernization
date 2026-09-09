@@ -80,6 +80,15 @@ body:
       required: true
 
   - type: input
+    id: author
+    attributes:
+      label: Autor
+      description: Quien abrió la solicitud de cambio de la beta. Es quien corrige lo que el piloto o el red teaming encuentren; se le menciona para que GitHub le notifique.
+      placeholder: "@usuario"
+    validations:
+      required: true
+
+  - type: input
     id: coordinator
     attributes:
       label: Coordinador del piloto
