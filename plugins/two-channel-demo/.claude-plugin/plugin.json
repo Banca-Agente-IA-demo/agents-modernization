@@ -1,0 +1,8 @@
+{
+  "name": "two-channel-demo",
+  "version": "0.2.0-beta.1",
+  "description": "Unidad de prueba para medir la convivencia de dos canales de marketplace (experimental y produccion) sobre el mismo repositorio de dominio.",
+  "author": {
+    "name": "Track Agentico BCP"
+  }
+}

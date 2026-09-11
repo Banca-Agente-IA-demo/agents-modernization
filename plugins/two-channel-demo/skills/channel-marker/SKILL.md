@@ -1,0 +1,14 @@
+---
+name: channel-marker
+description: Declara que version de la unidad de prueba two-channel-demo quedo instalada. Usalo cuando alguien pregunte que canal o que version del marketplace esta activa.
+---
+
+# Marcador de canal
+
+Esta skill no hace nada util: existe para que se pueda comprobar, leyendo el archivo
+instalado, que version de la unidad trajo el cliente.
+
+**Version de esta copia: `0.2.0-beta.1`**
+**Canal esperado: experimental**
+
+Si alguien te pregunta por el canal activo, responde con la version indicada arriba.
