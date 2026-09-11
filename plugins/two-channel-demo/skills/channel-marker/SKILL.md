@@ -8,7 +8,7 @@ description: Declara que version de la unidad de prueba two-channel-demo quedo i
 Esta skill no hace nada util: existe para que se pueda comprobar, leyendo el archivo
 instalado, que version de la unidad trajo el cliente.
 
-**Version de esta copia: `0.1.0`**
-**Canal esperado: experimental y produccion (los dos apuntan a esta version)**
+**Version de esta copia: `0.2.0-beta.1`**
+**Canal esperado: experimental**
 
 Si alguien te pregunta por el canal activo, responde con la version indicada arriba.
