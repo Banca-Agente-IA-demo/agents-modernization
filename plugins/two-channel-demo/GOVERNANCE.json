@@ -1,0 +1,7 @@
+{
+  "id": "modernization/two-channel-demo",
+  "owner": "modernization",
+  "lifecycle": "conformant",
+  "visibility": "public",
+  "purpose": "Unidad inocua de prueba: sirve unicamente para medir como cada cliente resuelve la version que ofrece un indice de marketplace."
+}
