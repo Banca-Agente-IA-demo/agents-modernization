@@ -1,0 +1,43 @@
+# Creación: lo dispara la acción de autoservicio `create_agentic_unit` de Port, que envía TODO el
+# formulario en un único input, `payload`, con la forma `{{ .inputs | tojson }}`.
+#
+# Es el flujo 0. Este archivo no lleva lógica a propósito: dice cuándo y a quién, y nada más. Si el
+# estándar cambia la forma del esqueleto o lo que se comprueba, aquí no se toca nada.
+#
+# EL DISPARADOR TIENE QUE VIVIR EN EL DOMINIO Y NO EN EL ESTÁNDAR, y no es preferencia de estilo: un
+# workflow reutilizable solo se puede invocar con `workflow_call`, nunca con `workflow_dispatch`, y
+# Port dispara contra un repositorio y un archivo concretos. Lo único que se decide es dónde vive la
+# lógica, y vive en el estándar.
+name: create-unit
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: "JSON con el formulario que envió Port"
+        required: true
+      port_run_id:
+        description: "Identificador de la ejecución en Port, para devolverle el estado"
+        required: false
+
+# Sin `concurrency`: dos creaciones a la vez son dos unidades distintas en dos ramas distintas, y
+# cancelar la primera porque llega la segunda perdería una unidad que alguien pidió.
+
+permissions:
+  contents: write
+
+jobs:
+  create-unit:
+    # APUNTA A LA RAMA Y NO A `@v1` MIENTRAS SE PRUEBA, y hay que devolverlo a `@v1` al fusionar.
+    # La etiqueta `v1` ya existe y es la que resuelven `register`, `verify`, `tag` y `publish`:
+    # moverla cambiaría lo que esos cuatro ejecutan, que es una migración y no un detalle de esta
+    # implementación.
+    uses: Banca-Agente-IA-demo/agentic-standard/.github/workflows/create-unit.yml@feat/create-unit-self-service
+    permissions:
+      contents: write
+    with:
+      payload: ${{ inputs.payload }}
+      port_run_id: ${{ inputs.port_run_id }}
+    secrets:
+      PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
+      PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
